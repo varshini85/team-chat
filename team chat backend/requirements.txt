@@ -1,0 +1,16 @@
+fastapi
+uvicorn[standard]
+
+# Database
+sqlalchemy
+psycopg2-binary
+
+# Auth & Security
+python-jose[cryptography]
+passlib[bcrypt]
+
+# Environment variables
+python-dotenv
+
+# Validation
+pydantic
