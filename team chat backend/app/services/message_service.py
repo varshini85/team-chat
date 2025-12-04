@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from fastapi import HTTPException, status
 from app.models.message import Message
 from app.models.channel import Channel
 from app.models.channel_member import ChannelMember
@@ -35,3 +36,43 @@ def get_messages(db: Session, channel_id: int, limit: int = 20, offset: int = 0)
     )
     messages = q.all()
     return messages
+
+def update_message(
+    db: Session,
+    message_id: int,
+    current_user: "User",
+    new_text: str,
+) -> Message:
+    msg = db.query(Message).filter(Message.id == message_id).first()
+    if not msg:
+        raise HTTPException(status_code=404, detail="Message not found")
+
+    if msg.sender_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not allowed to edit this message",
+        )
+    
+    msg.text = new_text
+    db.add(msg)
+    db.commit()
+    db.refresh(msg)
+    return msg
+
+def delete_message(
+    db: Session,
+    message_id: int,
+    current_user: "User",
+) -> None:
+    msg = db.query(Message).filter(Message.id == message_id).first()
+    if not msg:
+        raise HTTPException(status_code=404, detail="Message deleted")
+
+    if msg.sender_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not allowed to delete this message",
+        )
+
+    db.delete(msg)
+    db.commit()

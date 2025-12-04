@@ -35,16 +35,16 @@ def get_my_channels(
     return list_user_channels(db, current_user)
 
 @router.post("/{channel_id}/join", response_model=ChannelBase)
-def join_channel_route(
+def join(
     channel_id: int,
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
     channel = join_channel(db, current_user, channel_id)
-    return {"detail": "Joined"}
+    return channel
 
 @router.post("/{channel_id}/leave")
-def leave_channel_route(
+def leave(
     channel_id: int,
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user),
@@ -58,4 +58,4 @@ def get_channel_members(
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    return list_channel_members(db, channel_id, current_user)
+    return list_channel_members(db, channel_id)

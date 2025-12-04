@@ -10,3 +10,6 @@ class MessageBase(BaseModel):
 
 class MessageCreate(BaseModel):
     text: str
+
+class MessageUpdate(BaseModel):
+    text: str

@@ -74,17 +74,16 @@ def list_user_channels(db: Session, user: User):
     )
 
 def list_channel_members(db: Session, channel_id: int):
-    """Return all users in a channel (used for member count / list)."""
     channel = db.query(Channel).get(channel_id)
     if not channel:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Channel not found"
         )
 
-    users = (
+    members = (
         db.query(User)
         .join(ChannelMember, User.id == ChannelMember.user_id)
         .filter(ChannelMember.channel_id == channel_id)
         .all()
     )
-    return users
+    return members

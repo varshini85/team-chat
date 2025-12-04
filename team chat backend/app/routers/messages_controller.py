@@ -2,9 +2,9 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 from app.db.db_session import get_db
-from app.schemas.message import MessageBase, MessageCreate
+from app.schemas.message import MessageBase, MessageCreate, MessageUpdate
 from app.utils.deps import get_current_user
-from app.services.message_service import send_message, get_messages
+from app.services.message_service import send_message, get_messages, delete_message, update_message
 
 router = APIRouter()
 
@@ -36,5 +36,33 @@ def list_msg(
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user),
 ):
-    messages = get_messages(db, channel_id, limit=limit, offset=offset, current_user=current_user)
+    messages = get_messages(db, channel_id, limit=limit, offset=offset)
     return messages
+
+@router.patch("/{message_id}", response_model=MessageBase)
+def update_msg(
+    message_id: int,
+    payload: MessageUpdate,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    updated = update_message(
+        db=db,
+        message_id=message_id,
+        current_user=current_user,
+        new_text=payload.text,
+    )
+    return updated
+
+@router.delete("/{message_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_msg(
+    message_id: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    delete_message(
+        db=db,
+        message_id=message_id,
+        current_user=current_user,
+    )
+    return
