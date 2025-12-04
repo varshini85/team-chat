@@ -9,6 +9,9 @@ Features
 
 User authentication (sign up & login)
 Persistent login using JWT
+Secure password storage
+OTP support for password reset
+Channel-based messaging
 Create, view, join, and leave channels
 Real-time messaging using WebSockets
 Online / offline user presence
@@ -24,7 +27,6 @@ Frontend :
 
 React
 TypeScript
-React Router
 Axios
 Plain CSS (custom styling)
 
@@ -35,8 +37,10 @@ Python
 PostgreSQL
 SQLAlchemy
 Alembic (migrations)
+PostgreSQL
 WebSockets (real-time messaging & presence)
 JWT authentication (HTTP Bearer)
+SMTP (Email service)
 
 Project Structure
 ---------------
@@ -44,6 +48,7 @@ Project Structure
 team-chat-frontend/
 | src/
 |-- api/
+|  |-- auth.ts  
 |  |-- client.ts            
 |  |-- assets/
 |  |-- components/
@@ -57,6 +62,8 @@ team-chat-frontend/
 |  |  |-- SignupPage.tsx
 |  |  |-- ChannelsPage.tsx
 |  |  |-- ChannelChatPage.tsx
+|  |  |-- ForgetPassPage.tsx
+|  |  |-- ResetPassPage.tsx
 |  |-- App.tsx
 |  |-- index.css
 |  |-- main.tsx
@@ -92,9 +99,13 @@ team-chat-backend/
 |  |  |-- auth_service.py
 |  |  |-- channel_service.py
 |  |  |-- message_service.py
+|  |  |-- get_oto_for_email.py
+|  |  |-- otp_temp.py
 |  |-- utils/
 |  |  |-- deps.py
 |  |  |-- jwt.py
+|  |  |-- generate_otp.py
+|  |  |-- send_mail.py
 |  |-- main.py                
 |-- alembic.ini
 |-- requirements.txt
@@ -105,8 +116,7 @@ Setup Instructions
 
 Prerequisites :
 
-Node.js (v18+)
-Python (3.10+)
+Python (3.11+)
 PostgreSQL
 
 Frontend Setup :
@@ -134,6 +144,12 @@ Auth :
 
 POST /auth/signup
 POST /auth/login
+POST /auth/forget-password
+POST /auth/verify-otp
+POST /auth/new-password
+POST /auth/reset-password
+GET /auth/me
+
 
 Channels :
 
@@ -171,6 +187,14 @@ From the optional list in the assignment, this project includes:
 
 Message editing – users can edit only their own messages
 Message deletion – users can delete only their own messages
+
+OTP Generation
+---------------
+
+OTP-based password reset – users can securely reset their password using an email OTP  
+OTP expiration handling – OTPs automatically expire after a fixed time window  
+Secure OTP storage – OTPs are stored temporarily and cleared after verification  
+
 
 Deployment
 ---------------
