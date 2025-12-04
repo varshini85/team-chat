@@ -16,7 +16,9 @@ Base.metadata.create_all(bind=engine)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://team-chat-git-main-varshini-saravanans-projects-d588e173.vercel.app"],  
+    allow_origins=["http://localhost:5174",         
+        "http://127.0.0.1:5174",
+        "https://team-chat-git-main-varshini-saravanans-projects-d588e173.vercel.app"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
