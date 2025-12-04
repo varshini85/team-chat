@@ -331,7 +331,7 @@ marginBottom: 8,
 #{channel?.name ?? `Channel ${cid}`}
 </span>
 </div>
-<div style={{ fontSize: 12, color: "#555", textAlign: "right" }}>
+<div style={{ fontSize: 12, color: "#e41919ff", textAlign: "right" }}>
 <div>Members: {memberCount}</div>
 {onlineCount > 0 && <div>{onlineCount} online</div>}
 </div>
@@ -343,8 +343,8 @@ style={{
 marginBottom: 8,
 padding: 8,
 borderRadius: 6,
-background: "#FEF3C7",
-border: "1px solid #FACC15",
+background: "#fdca00ff",
+border: "1px solid #ffcc00ff",
 }}
 >
 <p style={{ margin: 0, marginBottom: 4 }}>
@@ -430,6 +430,7 @@ setEditingText(m.text);
 style={{
 border: "none",
 background: "transparent",
+color: "#DC2626",
 fontSize: 10,
 cursor: "pointer",
 }}
@@ -483,7 +484,7 @@ style={{
 display: "inline-block",
 padding: "6px 10px",
 borderRadius: 12,
-background: "#E5E7EB",
+background: "#2809d7ff",
 marginTop: 2,
 }}
 >
