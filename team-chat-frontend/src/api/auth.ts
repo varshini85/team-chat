@@ -1,5 +1,7 @@
 import api from "./client";
 
+/* ------------------ Types ------------------ */
+
 export interface SignupPayload {
   email: string;
   name: string;
@@ -33,12 +35,15 @@ export interface ResetPasswordPayload {
 
 export interface LoginResponse {
   access_token: string;
+  refresh_token: string;
   token_type: string;
   user_id: number;
   name: string;
   email: string;
   message: string;
 }
+
+/* ------------------ APIs ------------------ */
 
 export const signup = async (payload: SignupPayload) => {
   const res = await api.post("/auth/signup", payload);
@@ -65,18 +70,7 @@ export const setNewPassword = async (payload: NewPasswordPayload) => {
   return res.data as { message: string };
 };
 
-export const resetPassword = async (
-  payload: ResetPasswordPayload,
-  token: string
-) => {
-  const res = await api.post(
-    "/auth/reset-password",
-    payload,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+export const resetPassword = async (payload: ResetPasswordPayload) => {
+  const res = await api.post("/auth/reset-password", payload);
   return res.data as { message: string };
 };

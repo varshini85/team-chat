@@ -1,103 +1,100 @@
+// src/pages/ResetPassPage.tsx
 import React, { useState } from "react";
-import type { FormEvent } from "react";
-import { resetPassword } from "../api/auth";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const ResetPasswordPage: React.FC = () => {
-const [oldPassword, setOldPassword] = useState("");
-const [newPassword, setNewPassword] = useState("");
+const ResetPassPage: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
-const [loading, setLoading] = useState(false);
-const [error, setError] = useState<string | null>(null);
-const [message, setMessage] = useState<string | null>(null);
+  const token = searchParams.get("token");
 
-const handleSubmit = async (e: FormEvent) => {
-e.preventDefault();
-setLoading(true);
-setError(null);
-setMessage(null);
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
-try {
-const token = localStorage.getItem("access_token");
-if (!token) {
-setError("You must be logged in to change password.");
-setLoading(false);
-return;
-}
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-const data = await resetPassword(
-{
-old_password: oldPassword,
-new_password: newPassword,
-},
-token
-);
-setMessage(data.message || "Password updated successfully");
-setOldPassword("");
-setNewPassword("");
-} catch (err: any) {
-const detail =
-err?.response?.data?.detail ??
-err?.response?.data?.message ??
-"Failed to change password";
-setError(detail);
-} finally {
-setLoading(false);
-}
-};
+    if (!token) {
+      setError("Invalid or missing reset token.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const baseURL = import.meta.env.VITE_API_BASE_URL;
+
+      await axios.post(`${baseURL}/auth/reset-password`, {
+        token,
+        password,
+      });
+
+      setSuccess("Password reset successful. Redirecting to login...");
+      setTimeout(() => navigate("/login"), 2000);
+    } catch (err) {
+      console.error("Reset password failed", err);
+      setError("Failed to reset password. Try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-<div className="min-h-screen flex items-center justify-center bg-slate-900">
-<div className="w-full max-w-md bg-slate-800 rounded-2xl p-8 shadow-xl">
-<h1 className="text-2xl font-semibold text-white mb-6 text-center">
-Change password
-</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-sm bg-white rounded-xl shadow p-6 space-y-4"
+      >
+        <h1 className="text-xl font-semibold text-center">
+          Reset Password
+        </h1>
 
-{error && (
-<p className="text-sm text-red-400 mb-2">{error}</p>
-)}
+        {error && (
+          <p className="text-sm text-red-500 text-center">{error}</p>
+        )}
 
-{message && (
-<p className="text-sm text-emerald-400 mb-2">{message}</p>
-)}
+        {success && (
+          <p className="text-sm text-green-600 text-center">{success}</p>
+        )}
 
-<form onSubmit={handleSubmit} className="space-y-4">
-<div>
-<label className="block text-sm text-slate-200 mb-1">
-Old password
-</label>
-<input
-type="password"
-className="w-full rounded-lg bg-slate-900 border border-slate-700 px-3 py-2 text-slate-100 text-sm outline-none focus:border-indigo-500"
-value={oldPassword}
-onChange={(e) => setOldPassword(e.target.value)}
-required
-/>
-</div>
+        <input
+          type="password"
+          placeholder="New password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          className="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
 
-<div>
-<label className="block text-sm text-slate-200 mb-1">
-New password
-</label>
-<input
-type="password"
-className="w-full rounded-lg bg-slate-900 border border-slate-700 px-3 py-2 text-slate-100 text-sm outline-none focus:border-indigo-500"
-value={newPassword}
-onChange={(e) => setNewPassword(e.target.value)}
-required
-/>
-</div>
+        <input
+          type="password"
+          placeholder="Confirm new password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          required
+          className="w-full px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
 
-<button
-type="submit"
-disabled={loading}
-className="w-full rounded-lg bg-indigo-500 hover:bg-indigo-600 disabled:opacity-60 text-white py-2 text-sm font-medium transition"
->
-{loading ? "Updating..." : "Update password"}
-</button>
-</form>
-</div>
-</div>
-);
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 disabled:opacity-60"
+        >
+          {loading ? "Resetting..." : "Reset Password"}
+        </button>
+      </form>
+    </div>
+  );
 };
 
-export default ResetPasswordPage;
+export default ResetPassPage;
