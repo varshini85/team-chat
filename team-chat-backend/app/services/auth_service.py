@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
-from sqlalchemy import func
+from sqlalchemy import func, text
 from app.models.user import User
 from app.schemas.auth_schema import SignupIn, LoginIn, NewPasswordIn, ResetPasswordIn, MessageOut
 from app.utils.jwt import (
@@ -62,13 +62,12 @@ def login_user(db: Session, payload: LoginIn):
     return user, access_token, refresh_token
 
 def forgot_pass_verify(*, db: Session, payload):
-    email = payload.email.strip().lower()
-
-    user = db.query(User).filter(func.lower(User.email) == email).first()
-    if not user or not user.otp:
-        raise HTTPException(status_code=400, detail="Invalid OTP")
+    email = payload.email.lower().strip()
+    user = (db.query(User).filter(func.lower(User.email) == email,User.otp == payload.otp).first())
+    if not user:
+        raise HTTPException(status_code=400, detail="Invalid email or OTP")
     
-    return {"message": "OTP verified successfully"}
+    return {"message": " OTP verified successfully"}
 
 def forgot_pass(*, db: Session, payload):
     email_norm = payload.email.strip().lower()
