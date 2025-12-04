@@ -17,17 +17,20 @@ setError(null);
 setLoading(true);
 
 try {
-await signup(name, email, password);
-navigate("/channels");
+  await signup(name, email, password);
+  navigate("/channels");
 } catch (err: any) {
-const detail =
-err?.response?.data?.detail ||
-err?.response?.data?.message ||
-"Signup failed";
-setError(detail);
+  const detail =
+    err?.response?.data?.detail ||
+    err?.response?.data?.message ||
+    err?.message ||     
+    "Signup failed";
+
+  setError(detail);
 } finally {
-setLoading(false);
+  setLoading(false);
 }
+
 };
 
 return (

@@ -27,6 +27,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const setTokens = (accessToken: string, refreshToken: string) => {
+    localStorage.setItem("access_token", accessToken);
+    localStorage.setItem("refresh_token", refreshToken);
+    api.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("access_token");
 
@@ -34,6 +40,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setLoading(false);
       return;
     }
+
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
     api
       .get<User>("/auth/me")
@@ -48,8 +56,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     const res = await api.post("/auth/login", { email, password });
-    localStorage.setItem("access_token", res.data.access_token);
-    localStorage.setItem("refresh_token", res.data.refresh_token);
+    const { access_token, refresh_token } = res.data;
+
+    setTokens(access_token, refresh_token);
 
     const me = await api.get<User>("/auth/me");
     setUser(me.data);
@@ -57,8 +66,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signup = async (name: string, email: string, password: string) => {
     const res = await api.post("/auth/signup", { name, email, password });
-    localStorage.setItem("access_token", res.data.access_token);
-    localStorage.setItem("refresh_token", res.data.refresh_token);
+    const { access_token, refresh_token } = res.data;
+
+    setTokens(access_token, refresh_token);
 
     const me = await api.get<User>("/auth/me");
     setUser(me.data);
@@ -67,6 +77,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
+    delete api.defaults.headers.common["Authorization"];
     setUser(null);
   };
 
