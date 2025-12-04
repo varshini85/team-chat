@@ -9,4 +9,3 @@ alembic
 python-multipart
 python-dotenv
 email-validator
-python-3.11.9
