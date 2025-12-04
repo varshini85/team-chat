@@ -175,8 +175,8 @@ Message deletion – users can delete only their own messages
 Deployment
 ---------------
 
-Frontend URL: <Your Frontend Deployment URL>
-Backend URL: <Your Backend Deployment URL>
+Frontend URL: https://team-chat-psi.vercel.app/
+Backend URL: https://team-chat-i9xc.onrender.com/
 
 Author
 ---------------
