@@ -16,3 +16,22 @@ class TokenResponse(BaseModel):
 
 class RefreshTokenIn(BaseModel):
     refresh_token: str
+
+class ForgotPasswordIn(BaseModel):
+    email: EmailStr
+
+class ForgotPasswordVerify(BaseModel):
+    email: EmailStr
+    otp: str
+    
+class NewPasswordIn(BaseModel):
+    email: EmailStr
+    new_password: str
+
+
+class ResetPasswordIn(BaseModel):
+    old_password: str
+    new_password: str
+
+class MessageOut(BaseModel):
+    message: str

@@ -9,6 +9,8 @@ class User(Base):
     name = Column(String, nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
+    otp = Column(Integer,nullable=True)
+    otp_time = Column(Integer,nullable=True)
     is_active = Column(Boolean, default=True)
     messages = relationship("Message", back_populates="sender", cascade="all, delete")
     memberships = relationship("ChannelMember", back_populates="user", cascade="all, delete")
