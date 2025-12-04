@@ -124,7 +124,7 @@ const token = localStorage.getItem("access_token");
 if (!token) return;
 
 const protocol = window.location.protocol === "https:" ? "wss" : "ws";
-const wsUrl = `${protocol}://localhost:8000/ws/channels/${cid}?token=${encodeURIComponent(
+const wsUrl = `${protocol}://ws/channels/${cid}?token=${encodeURIComponent(
 token
 )}`;
 
