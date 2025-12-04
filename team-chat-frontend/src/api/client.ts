@@ -1,8 +1,7 @@
 import axios from "axios";
 
-// ✅ fallback to localhost if env is missing
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:8000",
+  baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
 api.interceptors.request.use((config) => {
@@ -21,7 +20,6 @@ const refreshAccessToken = async (): Promise<string | null> => {
   if (!refreshToken) return null;
 
   try {
-    // ✅ use same baseURL via api
     const res = await api.post("/auth/refresh", {
       refresh_token: refreshToken,
     });

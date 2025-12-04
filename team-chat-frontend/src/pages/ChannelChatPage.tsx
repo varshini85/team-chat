@@ -306,215 +306,215 @@ err?.message ||
 };
 
 if (Number.isNaN(cid)) {
-  return (
-    <div style={{ padding: 24, fontFamily: "system-ui" }}>
-      <Link to="/channels">← Back</Link>
-      <p>Invalid channel id.</p>
-    </div>
-  );
+return (
+<div style={{ padding: 24, fontFamily: "system-ui" }}>
+<Link to="/channels">← Back</Link>
+<p>Invalid channel id.</p>
+</div>
+);
 }
 
 const onlineCount = onlineUserIds.length;
 
 return (
-  <div style={{ padding: 24, fontFamily: "system-ui" }}>
-    <header
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        marginBottom: 8,
-      }}
-    >
-      <div>
-        <Link to="/channels">← Back</Link>
-        <span style={{ marginLeft: 8 }}>
-          #{channel?.name ?? `Channel ${cid}`}
-        </span>
-      </div>
-      <div style={{ fontSize: 12, color: "#555", textAlign: "right" }}>
-        <div>Members: {memberCount}</div>
-        {onlineCount > 0 && <div>{onlineCount} online</div>}
-      </div>
-    </header>
+<div style={{ padding: 24, fontFamily: "system-ui" }}>
+<header
+style={{
+display: "flex",
+justifyContent: "space-between",
+marginBottom: 8,
+}}
+>
+<div>
+<Link to="/channels">← Back</Link>
+<span style={{ marginLeft: 8 }}>
+#{channel?.name ?? `Channel ${cid}`}
+</span>
+</div>
+<div style={{ fontSize: 12, color: "#555", textAlign: "right" }}>
+<div>Members: {memberCount}</div>
+{onlineCount > 0 && <div>{onlineCount} online</div>}
+</div>
+</header>
 
-    {!isMember && (
-      <div
-        style={{
-          marginBottom: 8,
-          padding: 8,
-          borderRadius: 6,
-          background: "#FEF3C7",
-          border: "1px solid #FACC15",
-        }}
-      >
-        <p style={{ margin: 0, marginBottom: 4 }}>
-          You are not a member of this channel.
-        </p>
-        <button onClick={handleJoinChannel}>Join channel</button>
-      </div>
-    )}
+{!isMember && (
+<div
+style={{
+marginBottom: 8,
+padding: 8,
+borderRadius: 6,
+background: "#FEF3C7",
+border: "1px solid #FACC15",
+}}
+>
+<p style={{ margin: 0, marginBottom: 4 }}>
+You are not a member of this channel.
+</p>
+<button onClick={handleJoinChannel}>Join channel</button>
+</div>
+)}
 
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        height: "calc(100vh - 180px)",
-        border: "1px solid #ccc",
-        borderRadius: 8,
-        padding: 8,
-      }}
-    >
-      <div
-        style={{
-          flex: 1,
-          overflowY: "auto",
-          paddingRight: 4,
-          marginBottom: 8,
-        }}
-      >
-        {loading && <p>Loading chat…</p>}
-        {error && !loading && <p style={{ color: "red" }}>Error: {error}</p>}
+<div
+style={{
+display: "flex",
+flexDirection: "column",
+height: "calc(100vh - 180px)",
+border: "1px solid #ccc",
+borderRadius: 8,
+padding: 8,
+}}
+>
+<div
+style={{
+flex: 1,
+overflowY: "auto",
+paddingRight: 4,
+marginBottom: 8,
+}}
+>
+{loading && <p>Loading chat…</p>}
+{error && !loading && <p style={{ color: "red" }}>Error: {error}</p>}
 
-        {!loading && hasMore && (
-          <button
-            onClick={handleLoadOlder}
-            disabled={loadingMore}
-            style={{
-              marginBottom: 8,
-              padding: "4px 8px",
-              fontSize: 12,
-              cursor: loadingMore ? "default" : "pointer",
-            }}
-          >
-            {loadingMore ? "Loading…" : "Load older messages"}
-          </button>
-        )}
+{!loading && hasMore && (
+<button
+onClick={handleLoadOlder}
+disabled={loadingMore}
+style={{
+marginBottom: 8,
+padding: "4px 8px",
+fontSize: 12,
+cursor: loadingMore ? "default" : "pointer",
+}}
+>
+{loadingMore ? "Loading…" : "Load older messages"}
+</button>
+)}
 
-        {!loading &&
-          messages.map((m) => {
-            const isMine = user && (m as any).sender?.id === user.id;
-            const senderName = (m as any).sender?.name ?? "Unknown";
+{!loading &&
+messages.map((m) => {
+const isMine = user && (m as any).sender?.id === user.id;
+const senderName = (m as any).sender?.name ?? "Unknown";
 
-            let timeLabel = "";
-            try {
-              timeLabel = new Date(m.created_at).toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              });
-            } catch {
-              timeLabel = "";
-            }
+let timeLabel = "";
+try {
+timeLabel = new Date(m.created_at).toLocaleTimeString([], {
+hour: "2-digit",
+minute: "2-digit",
+});
+} catch {
+timeLabel = "";
+}
 
-            return (
-              <div key={m.id} style={{ marginBottom: 8 }}>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    fontSize: 11,
-                    color: "#555",
-                  }}
-                >
-                  <div>
-                    <strong>{senderName}</strong> {timeLabel}
-                  </div>
+return (
+<div key={m.id} style={{ marginBottom: 8 }}>
+<div
+style={{
+display: "flex",
+justifyContent: "space-between",
+fontSize: 11,
+color: "#555",
+}}
+>
+<div>
+<strong>{senderName}</strong> {timeLabel}
+</div>
 
-                  {isMine && (
-                    <div style={{ display: "flex", gap: 6 }}>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setEditingId(m.id);
-                          setEditingText(m.text);
-                        }}
-                        style={{
-                          border: "none",
-                          background: "transparent",
-                          fontSize: 10,
-                          cursor: "pointer",
-                        }}
-                      >
-                        edit
-                      </button>
+{isMine && (
+<div style={{ display: "flex", gap: 6 }}>
+<button
+type="button"
+onClick={() => {
+setEditingId(m.id);
+setEditingText(m.text);
+}}
+style={{
+border: "none",
+background: "transparent",
+fontSize: 10,
+cursor: "pointer",
+}}
+>
+edit
+</button>
 
-                      <button
-                        type="button"
-                        onClick={() => handleDeleteMessage(m.id)}
-                        style={{
-                          border: "none",
-                          background: "transparent",
-                          color: "#DC2626",
-                          fontSize: 10,
-                          cursor: "pointer",
-                        }}
-                      >
-                        delete
-                      </button>
-                    </div>
-                  )}
-                </div>
+<button
+type="button"
+onClick={() => handleDeleteMessage(m.id)}
+style={{
+border: "none",
+background: "transparent",
+color: "#DC2626",
+fontSize: 10,
+cursor: "pointer",
+}}
+>
+delete
+</button>
+</div>
+)}
+</div>
 
-                {editingId === m.id ? (
-                  <div style={{ display: "flex", gap: 6, marginTop: 4 }}>
-                    <input
-                      value={editingText}
-                      onChange={(e) => setEditingText(e.target.value)}
-                      style={{ flex: 1, padding: 6 }}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => handleEditMessage(m.id)}
-                    >
-                      Save
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setEditingId(null);
-                        setEditingText("");
-                      }}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                ) : (
-                  <div
-                    style={{
-                      display: "inline-block",
-                      padding: "6px 10px",
-                      borderRadius: 12,
-                      background: "#E5E7EB",
-                      marginTop: 2,
-                    }}
-                  >
-                    {m.text}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+{editingId === m.id ? (
+<div style={{ display: "flex", gap: 6, marginTop: 4 }}>
+<input
+value={editingText}
+onChange={(e) => setEditingText(e.target.value)}
+style={{ flex: 1, padding: 6 }}
+/>
+<button
+type="button"
+onClick={() => handleEditMessage(m.id)}
+>
+Save
+</button>
+<button
+type="button"
+onClick={() => {
+setEditingId(null);
+setEditingText("");
+}}
+>
+Cancel
+</button>
+</div>
+) : (
+<div
+style={{
+display: "inline-block",
+padding: "6px 10px",
+borderRadius: 12,
+background: "#E5E7EB",
+marginTop: 2,
+}}
+>
+{m.text}
+</div>
+)}
+</div>
+);
+})}
 
-        <div ref={endRef} />
-      </div>
+<div ref={endRef} />
+</div>
 
-      <form onSubmit={handleSend} style={{ display: "flex", gap: 8 }}>
-        <input
-          style={{ flex: 1, padding: 8 }}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder={
-            isMember
-              ? "Type a message..."
-              : "Join the channel to send messages"
-          }
-          disabled={!isMember}
-        />
-        <button type="submit" disabled={!isMember}>
-          Send
-        </button>
-      </form>
-    </div>
-  </div>
+<form onSubmit={handleSend} style={{ display: "flex", gap: 8 }}>
+<input
+style={{ flex: 1, padding: 8 }}
+value={input}
+onChange={(e) => setInput(e.target.value)}
+placeholder={
+isMember
+? "Type a message..."
+: "Join the channel to send messages"
+}
+disabled={!isMember}
+/>
+<button type="submit" disabled={!isMember}>
+Send
+</button>
+</form>
+</div>
+</div>
 );
 };
 

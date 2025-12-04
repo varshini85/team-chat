@@ -1,4 +1,3 @@
-// src/pages/ChannelsPage.tsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/client";
@@ -81,7 +80,7 @@ const otherChannels = channels.filter(
 (c) => !myChannels.some((mc) => mc.id === c.id)
 );
 
-  return (
+return (
 <div style={{ padding: 24, fontFamily: "system-ui" }}>
 <header style={{ display: "flex", justifyContent: "space-between", marginBottom: 16, alignItems: "center" }}>
 <h2>Channels</h2>

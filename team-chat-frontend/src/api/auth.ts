@@ -1,7 +1,5 @@
 import api from "./client";
 
-/* ------------------ Types ------------------ */
-
 export interface SignupPayload {
   email: string;
   name: string;
@@ -42,8 +40,6 @@ export interface LoginResponse {
   email: string;
   message: string;
 }
-
-/* ------------------ APIs ------------------ */
 
 export const signup = async (payload: SignupPayload) => {
   const res = await api.post("/auth/signup", payload);
