@@ -1,16 +1,7 @@
 fastapi
-uvicorn[standard]
-
-# Database
+uvicorn
 sqlalchemy
 psycopg2-binary
-
-# Auth & Security
-python-jose[cryptography]
-passlib[bcrypt]
-
-# Environment variables
-python-dotenv
-
-# Validation
-pydantic
+python-jose / jose
+passlib
+alembic
