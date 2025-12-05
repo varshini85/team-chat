@@ -53,7 +53,7 @@ export const login = async (payload: LoginPayload) => {
 
 export const forgotPassword = async (payload: ForgotPasswordPayload) => {
   const res = await api.post("/auth/forgot-password", payload);
-  return res.data as { message: string };
+  return res.data;
 };
 
 export const verifyOtp = async (payload: VerifyOtpPayload) => {
