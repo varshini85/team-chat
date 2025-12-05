@@ -199,8 +199,9 @@ Secure OTP storage – OTPs are stored temporarily and cleared after verificatio
 Deployment
 ---------------
 
-Frontend URL: https://team-chat-psi.vercel.app/
-Backend URL: https://team-chat-i9xc.onrender.com/
+Frontend URL: https://team-chat-ktbv.vercel.app
+
+Backend URL: https://team-chat-backend-uqy8.onrender.com
 
 Author
 ---------------
