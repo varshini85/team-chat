@@ -1,6 +1,5 @@
-// src/App.tsx
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import ChannelsPage from "./pages/ChannelsPage";
 import ChannelChatPage from "./pages/ChannelChatPage";
 import LoginPage from "./pages/LoginPage";
@@ -10,7 +9,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 const App: React.FC = () => {
 return (
-<BrowserRouter>
+<HashRouter>
 <AuthProvider>
 <Routes>
 
@@ -33,7 +32,7 @@ return (
 
 </Routes>
 </AuthProvider>
-</BrowserRouter>
+</HashRouter>
 );
 };
 
