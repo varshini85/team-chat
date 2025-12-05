@@ -4,6 +4,7 @@ import ChannelsPage from "./pages/ChannelsPage";
 import ChannelChatPage from "./pages/ChannelChatPage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import ForgotPassPage from "./pages/ForgotPassPage"; // <- add this import
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -12,24 +13,29 @@ return (
 <HashRouter>
 <AuthProvider>
 <Routes>
-
 <Route path="/login" element={<LoginPage />} />
 <Route path="/signup" element={<SignupPage />} />
+<Route path="/forgot-password" element={<ForgotPassPage />} />
 
-<Route path="/channels" element={
+<Route
+path="/channels"
+element={
 <ProtectedRoute>
 <ChannelsPage />
 </ProtectedRoute>
-} />
+}
+/>
 
-<Route path="/channels/:channelId" element={
+<Route
+path="/channels/:channelId"
+element={
 <ProtectedRoute>
 <ChannelChatPage />
 </ProtectedRoute>
-} />
+}
+/>
 
 <Route path="*" element={<Navigate to="/login" replace />} />
-
 </Routes>
 </AuthProvider>
 </HashRouter>
