@@ -199,7 +199,7 @@ Secure OTP storage – OTPs are stored temporarily and cleared after verificatio
 Deployment
 ---------------
 
-Frontend URL: https://team-chat-ktbv.vercel.app
+Frontend URL: team-chat-frontend.vercel.app
 
 Backend URL: https://team-chat-backend-uqy8.onrender.com
 

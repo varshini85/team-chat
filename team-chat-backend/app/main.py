@@ -6,8 +6,6 @@ from app.routers import auth_controller, channels_controller, messages_controlle
 
 app = FastAPI(title="Team Chat App")
 
-app = FastAPI()
-
 @app.get("/")
 def root():
     return {"message": "Backend is connected"}
@@ -18,7 +16,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5174",         
         "http://127.0.0.1:5174",
-        "team-chat-frontend.vercel.app"],  
+        "https://team-chat-frontend.vercel.app"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
